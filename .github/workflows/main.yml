@@ -34,5 +34,4 @@ jobs:
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-app:latest
           sudo docker stop nodejs-app || true
           sudo docker rm nodejs-app || true
-          sudo docker rm -f nodejs-app
-          sudo docker run -dit -p 80:3000 --name nodejs-app ${{ secrets.DOCKER_USERNAME }}/nodejs-app:latest
+          sudo docker run -dit --name nodejs-app -p 80:3000  ${{ secrets.DOCKER_USERNAME }}/nodejs-app:latest
