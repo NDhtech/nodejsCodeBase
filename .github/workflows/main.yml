@@ -22,8 +22,8 @@ jobs:
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/nodejs-app:latest
 
-    - name: Deploy to EC2 via SSH
-      uses: appleboy/ssh-action@v1.0.0
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v1
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
