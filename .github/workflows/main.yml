@@ -31,7 +31,7 @@ jobs:
         Port: 22
         debug: true
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-app:latest
-          docker stop nodejs-app || true
-          docker rm nodejs-app || true
-          docker run -d -p 80:3000 --name nodejs-app ${{ secrets.DOCKER_USERNAME }}/nodejs-app:latest
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/nodejs-app:latest
+          sudo docker stop nodejs-app || true
+          sudo docker rm nodejs-app || true
+          sudo docker run -d -p 80:3000 --name nodejs-app ${{ secrets.DOCKER_USERNAME }}/nodejs-app:latest
