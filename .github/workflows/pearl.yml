@@ -1,17 +1,20 @@
-name: Build and Push Docker Image to ECR
+name: Build and Push Docker Image to AWS ECR
 
 on:
   push:
-    branches:
-      - main  # or any branch you deploy from
+    branches: [ "main" ]  # or your deployment branch
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      id-token: write  # for OIDC (optional, for best practice)
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -21,20 +24,14 @@ jobs:
           aws-region: eu-west-2
 
       - name: Login to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Ensure ECR repository exists
-        run: |
-          aws ecr describe-repositories --repository-names ndcash || \
-          aws ecr create-repository --repository-name ndcash
 
       - name: Build, tag, and push Docker image
         env:
-         ECR_REGISTRY: 047719632114.dkr.ecr.eu-west-2.amazonaws.com
-         ECR_REPOSITORY: pearl/repo
-         IMAGE_NAME: ndcash
-         IMAGE_TAG: latest
+          ECR_REGISTRY: 047719632114.dkr.ecr.eu-west-2.amazonaws.com
+          ECR_REPOSITORY: pearl/repo
+          IMAGE_TAG: latest
         run: |
-          docker build -t $IMAGE_NAME .
-          docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG          
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
