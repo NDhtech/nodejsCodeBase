@@ -7,8 +7,7 @@ on:
 env:
   AWS_REGION: us-east-1
   ECR_REGISTRY: public.ecr.aws/k9l6i6n0  
-  IMAGE_NAME: ndcash
-
+  IMAGE_NAME: nd/ecr-repo
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
